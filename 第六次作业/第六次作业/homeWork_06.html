@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>用户登录</title>
+    <style>
+      .loginBox {
+        /* flex布局 */
+        display: flex;
+        /* 设置主轴为 Y */
+        flex-direction: column;
+        /* 主轴对齐方式：均匀对齐 */
+        justify-content: space-around;
+        /* 侧轴对齐方式：居中 */
+        align-items: center;
+
+        width: 500px;
+        height: 380px;
+        margin: 20px auto;
+        background-color: #fff;
+
+        /* 边框圆角 */
+        border-radius: 20px;
+        /* 阴影 */
+        box-shadow: 0 0 20px 5px rgb(158, 158, 158);
+      }
+
+      .loginBox .loginInput {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+
+        height: 160px;
+        width: 90%;
+        font-size: 20px;
+      }
+
+      .loginBox .loginInput label {
+        width: 100%;
+      }
+
+      input {
+        width: 80%;
+        height: 36px;
+
+        /* 输入框默认聚焦边框：无 */
+        outline: none;
+
+        border-radius: 20px;
+        padding-left: 20px;
+        border: none;
+        box-shadow: 0 0 0 2px rgb(12, 200, 162);
+      }
+
+      /* 输入框获得焦点后 */
+      input:focus {
+        /* 使用动画 */
+        animation: input-boder-anmation 2s infinite linear;
+      }
+
+      /* 设置动画 */
+      @keyframes input-boder-anmation {
+        from {
+          box-shadow: 0 0 0 2px rgb(12, 200, 162);
+        }
+        50% {
+          box-shadow: 0 0 10px 5px rgb(12, 200, 162);
+        }
+        to {
+          box-shadow: 0 0 0 2px rgb(12, 200, 162);
+        }
+      }
+
+      button {
+        width: 90%;
+        height: 38px;
+        background-color: rgb(12, 200, 162);
+        color: #fff;
+        margin-bottom: 50px;
+        border: none;
+        border-radius: 20px;
+        font-size: 16px;
+        /* 鼠标光标：手 */
+        cursor: pointer;
+      }
+      button:hover {
+        box-shadow: 0 0 0 2px rgb(12, 200, 162);
+        background-color: rgb(18, 171, 135);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loginBox">
+      <h1>用户登录</h1>
+      <div class="loginInput">
+        <label for=""
+          >账号：<input type="text" id="userName" placeholder="账号" />
+        </label>
+        <label for=""
+          >密码：<input type="password" id="password" placeholder="密码"
+        /></label>
+      </div>
+      <button id="btn">登入</button>
+    </div>
+    <script>
+      // 获取 输入框、按钮
+      // var userNameInput = document.getElementById('userName'); // 方式一
+      var userNameInput = document.querySelector('#userName'); // 方式二
+      var passwordInput = document.getElementById('password');
+      var btn = document.getElementById('btn');
+
+      // 存储用户名、密码，用于验证
+      var users = [
+        { userName: 'liuwenchuang', password: '123456' },
+        { userName: 'fangliming', password: '654321' },
+        { userName: 'admin', password: 'admin' },
+      ];
+
+      // 给按钮绑定点击事件，回调函数用于校验
+      btn.onclick = function () {
+        var userName = userNameInput.value;
+        var password = passwordInput.value;
+        console.log(typeof userName, typeof password);
+        // 用户名存在
+        // Arr.some() 数组方法用于检测数组中是否含有某元素，有则返回true，无则false
+        // 箭头函数(arg)=>{return xxx} 简写为 () => xxx
+        if (users.some((user) => user.userName === userName)) {
+          // 密码正确，跳转至首页
+          if (users.some((user) => user.password === password)) {
+            location.href = 'paopao.html';
+          } else {
+            alert('您的密码错误，请重新输入！');
+            // 密码错误，密码框变红
+            // 修改样式：dom.style.xxx = 'xxx'
+            // 对象中属性的调用方式：1、obj.xxx，2、obj['xxx']
+            // box-shadow含有 - ，js会作为减法处理
+            passwordInput.style['box-shadow'] = '0 0 0 2px rgb(222, 84, 25)';
+            // 如果样式属性中含有 - ，比如 font-style、box-shadow，可以采用小驼峰命名法
+            // passwordInput.style.boxShadow = '0 0 0 2px rgb(222, 84, 25)';
+          }
+        } else if (userName.trim() === '' || password.trim() === '') {
+          // 用户输入空格，或未输入
+          alert('请输入完整数据！');
+        } else {
+          alert('您的用户名不存在，请注册！');
+          // 用户名不存在，用户名框变红
+          userNameInput.style['box-shadow'] = '0 0 0 2px rgb(222, 84, 25)';
+          // 清除输入框
+          passwordInput.value = '';
+        }
+      };
+
+      // 输入框获取焦点
+      userNameInput.onfocus = function () {
+        userNameInput.style['box-shadow'] = '0 0 0 2px rgb(12, 200, 162)';
+      };
+      passwordInput.onfocus = function () {
+        passwordInput.style['box-shadow'] = '0 0 0 2px rgb(12, 200, 162)';
+      };
+    </script>
+  </body>
+</html>
